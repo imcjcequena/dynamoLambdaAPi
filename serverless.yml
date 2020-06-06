@@ -1,12 +1,13 @@
-service: serverless-rest-api-with-dynamodb
+service: rtw-checkpoint
 
 frameworkVersion: ">=1.1.0 <2.0.0"
 
 provider:
   name: aws
   runtime: nodejs10.x
+  region: ap-southeast-2
   environment:
-    DYNAMODB_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+    DYNAMODB_TABLE: rtw-checkpoint
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -23,7 +24,7 @@ functions:
     handler: todos/create.create
     events:
       - http:
-          path: todos
+          path: checkin
           method: post
           cors: true
 
@@ -31,7 +32,7 @@ functions:
     handler: todos/list.list
     events:
       - http:
-          path: todos
+          path: checkins
           method: get
           cors: true
 
@@ -39,7 +40,7 @@ functions:
     handler: todos/get.get
     events:
       - http:
-          path: todos/{id}
+          path: checkin/{name}
           method: get
           cors: true
 
@@ -47,7 +48,7 @@ functions:
     handler: todos/update.update
     events:
       - http:
-          path: todos/{id}
+          path: checkin/{name}
           method: put
           cors: true
 
@@ -55,7 +56,7 @@ functions:
     handler: todos/delete.delete
     events:
       - http:
-          path: todos/{id}
+          path: checkin/{name}
           method: delete
           cors: true
 
@@ -67,11 +68,11 @@ resources:
       Properties:
         AttributeDefinitions:
           -
-            AttributeName: id
+            AttributeName: name
             AttributeType: S
         KeySchema:
           -
-            AttributeName: id
+            AttributeName: name
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
