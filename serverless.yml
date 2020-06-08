@@ -40,7 +40,7 @@ functions:
     handler: todos/get.get
     events:
       - http:
-          path: checkin/{name}
+          path: checkin
           method: get
           cors: true
 
@@ -48,7 +48,7 @@ functions:
     handler: todos/update.update
     events:
       - http:
-          path: checkin/{name}
+          path: checkin/{country}
           method: put
           cors: true
 
@@ -56,23 +56,21 @@ functions:
     handler: todos/delete.delete
     events:
       - http:
-          path: checkin/{name}
+          path: checkin/{country}
           method: delete
           cors: true
 
 resources:
   Resources:
     TodosDynamoDbTable:
-      Type: 'AWS::DynamoDB::Table'
+      Type: "AWS::DynamoDB::Table"
       DeletionPolicy: Retain
       Properties:
         AttributeDefinitions:
-          -
-            AttributeName: name
+          - AttributeName: country
             AttributeType: S
         KeySchema:
-          -
-            AttributeName: name
+          - AttributeName: country
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
